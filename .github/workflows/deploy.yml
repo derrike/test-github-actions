@@ -1,14 +1,12 @@
 
 
-on: [push, pull_request]
-  # push:
-  #   branches: [ '*' ]
-  # pull_request:
-  #   branches: [ master ]
+on:
+  push:
+    branches: [ "master" ]
 
 jobs:
-  build:
-    name: Build
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     strategy:
@@ -46,14 +44,3 @@ jobs:
           aws s3 ls
           ls
           echo "repo=${{ github.repository}},commitId=${{ github.sha }}"
-
-      # - name: Push to EC2
-      #   id: deploy
-      #   run: |
-      #     # Assuming the Deployment Group is already setup
-      #     aws deploy create-deployment \
-      #       --application-name cookiecutter-django \
-      #       --deployment-group-name deploy \
-      #       --deployment-config-name CodeDeployDefault.OneAtATime \
-      #       --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
-
