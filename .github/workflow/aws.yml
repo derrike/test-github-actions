@@ -1,0 +1,38 @@
+
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: S3 Ls
+        id: deploy
+        run: aws s3 ls
+
+      # - name: Push to EC2
+      #   id: deploy
+      #   run: |
+      #     # Assuming the Deployment Group is already setup
+      #     aws deploy create-deployment \
+      #       --application-name cookiecutter-django \
+      #       --deployment-group-name deploy \
+      #       --deployment-config-name CodeDeployDefault.OneAtATime \
+      #       --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+
